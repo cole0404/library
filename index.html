@@ -10,24 +10,32 @@
   <body>
     <header>
       <h1>Library</h1>
-      <button id="bookButton" type="button">Add Book</button>
+      <button id="bookButton" type="button">+Add Book</button>
     </header>
 
     <main>
       <form class="popup" id="popup" action="/">
-        <label for="title">Book Name</label>
-        <input type="text" name="title" id="title" />
+        <label for="title"
+          >Book Name
+          <input type="text" name="title" id="title" required />
+        </label>
 
-        <label for="author">Author Name</label>
-        <input type="text" name="author" id="author" />
+        <label for="author"
+          >Author Name
+          <input type="text" name="author" id="author" required />
+        </label>
 
-        <label for="pages">Number of Pages</label>
-        <input type="number" name="pages" id="pages" />
+        <label for="pages"
+          >Number of Pages
+          <input type="number" name="pages" id="pages" required />
+        </label>
 
-        <label for="status">Have you read it?</label>
-        <input type="checkbox" name="read" id="read" />
+        <label for="status"
+          >Have you read it?
+          <input type="checkbox" name="read" id="read" />
+        </label>
 
-        <button type="button">Submit</button>
+        <button type="submit">Submit</button>
       </form>
     </main>
 
