@@ -1,45 +1,45 @@
 let myLibrary = [];
 
-//Selectors here:
+//Selectors:
 const main = document.querySelector("main");
-const form = document.querySelector("form");
 const bookButton = document.querySelector("#bookButton");
-const submitButton = document.querySelector(".popup button");
+const form = document.querySelector("form");
+const submitButton = document.querySelector("#popup button");
 
-//Event Listeners here:
+//Event listeners:
 bookButton.addEventListener("click", openForm);
+form.addEventListener("submit", function (event) {
+  event.preventDefault();
+});
 submitButton.addEventListener("click", addBookToLibrary);
 
-//book constructor
-function Book(title, author, pages, read) {
-  this.title = title;
-  this.author = author;
-  this.pages = pages;
-  this.read = read;
+function Book() {
+  this.title = document.querySelector("#title").value;
+  this.author = document.querySelector("#author").value;
+  this.pages = document.querySelector("#pages").value;
+  this.read = document.querySelector("#read").checked;
+}
+
+function openForm() {
+  document.getElementById("popup").style.display = "flex";
 }
 
 function addBookToLibrary() {
-  const title = document.querySelector("#title").value;
-  const author = document.querySelector("#author").value;
-  const pages = document.querySelector("#pages").value;
-  const read = document.querySelector("#read").checked;
-
-  let newBook = new Book(title, author, pages, read);
-
   if (form.checkValidity() == false) return;
   else {
+    globalThis.newBook = new Book();
     myLibrary.push(newBook);
     document.forms["popup"].reset();
     document.getElementById("popup").style.display = "none";
 
-    const container = document.createElement("div");
+    const card = document.createElement("div");
     const titleDiv = document.createElement("div");
     const authorDiv = document.createElement("div");
     const pagesDiv = document.createElement("div");
     const readButton = document.createElement("button");
     const removeButton = document.createElement("button");
 
-    container.className = "container";
+    card.className = "card";
     titleDiv.className = "titleDiv";
     authorDiv.className = "authorDiv";
     pagesDiv.className = "pagesDiv";
@@ -49,38 +49,39 @@ function addBookToLibrary() {
     titleDiv.textContent = `"${newBook.title}"`;
     authorDiv.textContent = `${newBook.author}`;
     pagesDiv.textContent = `Pages: ${newBook.pages}`;
+    removeButton.textContent = `Remove`;
     if (newBook.read == true) {
       readButton.textContent = `Read`;
-    } else readButton.textContent = `Not read`;
-    removeButton.textContent = `Remove`;
+      readButton.style.background = "#ef5a5a";
+    } else {
+      readButton.textContent = `Not read`;
+      readButton.style.background = "#ffa952";
+    }
 
-    readButton.addEventListener("click", function () {
-      if (newBook.read == true) {
-        newBook.read = false;
-        readButton.textContent = "Not read";
-      } else {
-        newBook.read = true;
-        readButton.textContent = "Read";
-      }
-    });
+    readButton.addEventListener("click", newBook.toggleRead);
 
     removeButton.addEventListener("click", function () {
-      main.removeChild(container);
+      main.removeChild(card);
     });
 
-    main.appendChild(container);
-    container.appendChild(titleDiv);
-    container.appendChild(authorDiv);
-    container.appendChild(pagesDiv);
-    container.appendChild(readButton);
-    container.appendChild(removeButton);
-
-    form.addEventListener("submit", function (event) {
-      event.preventDefault();
-    });
+    main.appendChild(card);
+    card.appendChild(titleDiv);
+    card.appendChild(authorDiv);
+    card.appendChild(pagesDiv);
+    card.appendChild(readButton);
+    card.appendChild(removeButton);
   }
 }
 
-function openForm() {
-  document.getElementById("popup").style.display = "grid";
-}
+Book.prototype.toggleRead = function () {
+  if (newBook.read == true) {
+    newBook.read = false;
+    this.textContent = "Not read";
+    this.style.background = "#ffa952";
+  } else if (newBook.read == false) {
+    newBook.read = true;
+    this.textContent = "Read";
+    this.style.background = "#ef5a5a";
+  }
+  console.log(myLibrary);
+};
