@@ -70,7 +70,7 @@ label {
     text-align: center;
 }
 
-#removeButton {
+.removeButton {
     background-color: #dc2626;
 }
 
@@ -78,6 +78,6 @@ button:hover {
     opacity: 90%;
 }
 
-#removeButton:hover {
+.removeButton:hover {
     background-color: #ef4444;
 }
