@@ -13,6 +13,14 @@ form.addEventListener("submit", function (event) {
   event.preventDefault();
 });
 submitButton.addEventListener("click", addBookToLibrary);
+window.addEventListener("click", (event) => {
+  if (!event.target.matches("#bookButton")) {
+    if (document.getElementById("popup").style.display == "flex") {
+      closeForm();
+    }
+  }
+});
+form.addEventListener("click", (event) => event.stopPropagation());
 
 function Book() {
   this.title = document.querySelector("#title").value;
@@ -23,6 +31,13 @@ function Book() {
 
 function openForm() {
   document.getElementById("popup").style.display = "flex";
+  document.getElementById("invisible").style.display = "block";
+}
+
+function closeForm() {
+  document.forms["popup"].reset();
+  document.getElementById("popup").style.display = "none";
+  document.getElementById("invisible").style.display = "none";
 }
 
 function addBookToLibrary() {
@@ -30,10 +45,7 @@ function addBookToLibrary() {
   else {
     newBook = new Book();
     myLibrary.push(newBook);
-
-    document.forms["popup"].reset();
-    document.getElementById("popup").style.display = "none";
-
+    closeForm();
     createCard();
   }
 }
@@ -57,6 +69,8 @@ function createCard() {
   authorDiv.textContent = `${newBook.author}`;
   pagesDiv.textContent = `Pages: ${newBook.pages}`;
   removeButton.textContent = `Remove`;
+  removeButton.value = myLibrary.indexOf(newBook);
+
   if (newBook.read == true) {
     readButton.textContent = `Read`;
     readButton.style.background = "#ef5a5a";
@@ -67,14 +81,8 @@ function createCard() {
 
   readButton.addEventListener("click", newBook.toggleRead);
 
-  //when cards are created, create a index of each new card that will correspond with library array
   removeButton.addEventListener("click", function () {
-    let cards = document.querySelectorAll(".removeButton");
-
-    for (let i = 0; i < cards; i++) {
-      if (i == ) myLibrary.splice(i, 1);
-    }
-
+    myLibrary.splice(parseInt(event.currentTarget.value), 1);
     main.removeChild(card);
   });
 
@@ -96,5 +104,4 @@ Book.prototype.toggleRead = function () {
     this.textContent = "Read";
     this.style.background = "#ef5a5a";
   }
-  console.log(myLibrary);
 };
